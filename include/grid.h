@@ -9,13 +9,13 @@ class Grid {
 	std::vector < std::vector <int> > grid{}, grid_next{};
 	int grid_size{};
 
-	//const int cell_dead = 0;
-	//const int cell_alive = 1;
-	//const int cell_invalid = -1;
+	const int cell_dead = 0;
+	const int cell_alive = 1;
+	const int cell_invalid = -1;
 
-	const char cell_dead = '.';
-	const char cell_alive = '#';
-	const char cell_invalid = 'x';
+	//const char cell_dead = '.';
+	//const char cell_alive = '#';
+	//const char cell_invalid = 'x';
 
 
 	void set_grid(std::vector < std::vector <int> >& grid, int value);
@@ -37,11 +37,13 @@ public:
 	void process_grid();
 	void erase_grid();
 	void draw_grid();
+	std::vector < std::vector <int> > get_grid();
 };
 
 void Grid::set_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
 	std::vector <int> row{};
 	for(int i=0; i < grid_size; i++){
+		row = {};
 		for(int j=0; j < grid_size; j++){
 			row.push_back(value);
 		}
@@ -62,6 +64,10 @@ int Grid::get_cell_state(int i, int j){
 		return cell_invalid; //
 	}
 	return grid[i][j];
+}
+
+std::vector < std::vector <int> > Grid::get_grid(){
+	return grid;
 }
 
 int Grid::count_neighbors(int i, int j){
@@ -119,7 +125,8 @@ void Grid::erase_grid(){
 void Grid::draw_grid(){
 	for(int i=0; i < grid_size; i++){
 		for(int j=0; j < grid_size; j++){
-			std::cout << static_cast<char>(get_cell_state(i, j)) << " ";
+			//std::cout << static_cast<char>(get_cell_state(i, j)) << " ";
+			std::cout << get_cell_state(i, j) << " ";
 		}
 		std::cout << std::endl;
 	}
