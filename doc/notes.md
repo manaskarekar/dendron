@@ -6,3 +6,4 @@
 - Instead of drawing each rectangle, load one image for each state and reuse.
 - Like the python version, just create a for-x-for-y fn that you pass different operations to.
 - Write a tool to implement the Game of Life pattern recorder that records unique patterns and then you can inspect them later.
+- Make shapes Class that you could specify the "center/origin" to and it would be placed on the grid relative to the center.

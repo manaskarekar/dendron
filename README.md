@@ -1,4 +1,6 @@
-## Dendron - Conway's Game of Life v0.0.2
+## Dendron - Conway's Game of Life
+
+Version 0.0.3
 
 I stumbled upon Conway's Game Of Life recently and got obssessed with it, I had initially done a terminal based version in Python, but I wanted to play around with SFML (not python bindings) and so I did this in C++.
 

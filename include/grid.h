@@ -18,18 +18,17 @@ class Grid {
 	//const char cell_invalid = 'x';
 
 
+	void init_grid(std::vector < std::vector <int> >& grid, int value);
 	void set_grid(std::vector < std::vector <int> >& grid, int value);
-	void set_cell_dead(std::vector < std::vector <int> >& grid, int i, int j);
-	void set_cell_alive(std::vector < std::vector <int> >& grid, int i, int j);
-
+	void set_cell_state(std::vector < std::vector <int> >& grid, int i, int j, int value);
 	int get_cell_state(int i, int j);
 	int count_neighbors(int i, int j);
 
 public:
 	//Grid()=default;
 	Grid(const int n) : grid_size(n) {
-		set_grid(grid, cell_dead);
-		set_grid(grid_next, cell_dead);
+		init_grid(grid, cell_dead);
+		init_grid(grid_next, cell_dead);
 	};
 
 	void seed_grid(std::vector< std::vector <int> > alive_cells);
@@ -40,7 +39,7 @@ public:
 	std::vector < std::vector <int> > get_grid();
 };
 
-void Grid::set_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
+void Grid::init_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
 	std::vector <int> row{};
 	for(int i=0; i < grid_size; i++){
 		row = {};
@@ -51,12 +50,16 @@ void Grid::set_grid(std::vector < std::vector <int> >& grid_, int value){ // und
 	}
 }
 
-void Grid::set_cell_dead(std::vector < std::vector <int> >& grid_, int i, int j){
-	grid_[i][j] = cell_dead;
+void Grid::set_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
+	for(int i=0; i < grid_size; i++){
+		for(int j=0; j < grid_size; j++){
+			set_cell_state(grid_, i, j, value);
+		}
+	}
 }
 
-void Grid::set_cell_alive(std::vector < std::vector <int> >& grid_, int i, int j){
-	grid_[i][j] = cell_alive;
+void Grid::set_cell_state(std::vector < std::vector <int> >& grid_, int i, int j, int value){
+	grid_[i][j] = value;
 }
 
 int Grid::get_cell_state(int i, int j){
@@ -90,15 +93,18 @@ int Grid::count_neighbors(int i, int j){
 
 void Grid::seed_grid(std::vector< std::vector <int> > alive_cells){
 	for (auto c : alive_cells){
-		set_cell_alive(grid, c[0], c[1]);
+		set_cell_state(grid, c[0], c[1], cell_alive);
 	}
 }
 
 void Grid::update_grid(){
+	//if (grid == grid_next) { //TODO: Correct comparison
+	//	//TODO: Show "No more activity in visible window" or something.
+	//	return;
+	//}
 	set_grid(grid_next, cell_dead); //TODO: Instead of setting the next grid as dead, copy the current grid and modify based on previous states.
 	process_grid();
 	grid = grid_next; //TODO: check 2 things: assignment and scope of these
-
 }
 
 void Grid::process_grid(){
@@ -106,13 +112,13 @@ void Grid::process_grid(){
 		for(int j=0; j < grid_size; j++){
 			int count = count_neighbors(i, j);
 			if (count != 2 && count != 3) {
-				set_cell_dead(grid_next, i, j);
+				set_cell_state(grid_next, i, j, cell_dead);
 			} else if (count == 2) {
 				if (get_cell_state(i, j) == cell_alive){
-					set_cell_alive(grid_next, i, j);
+					set_cell_state(grid_next, i, j, cell_alive);
 				}
 			} else if (count == 3) {
-				set_cell_alive(grid_next, i, j);
+				set_cell_state(grid_next, i, j, cell_alive);
 			}
 		}
 	}
