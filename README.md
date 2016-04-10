@@ -8,6 +8,6 @@ Lots of improvements to be made. And I'm aware of at least a couple of buggy beh
 
 Watching the game unfold is a lot of fun, and I think I could keep doing it for hours.
 
-Here's a sample video of a 67x67 non-wrapping grid, seeded with an R-Pentonimo : https://www.youtube.com/watch?v=azRhmWiKj7A
+Here's a sample video of a 67x67 non-wrapping grid, seeded with an R-Pentonimo : https://www.youtube.com/watch?v=B3P-LnrXE3k
 
 ![](http://i.imgur.com/YqNoa3v.png)
