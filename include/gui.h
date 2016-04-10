@@ -8,7 +8,7 @@
 class GridGUI {
 	sf::Color dead_color = sf::Color(32,32,32);
 	sf::Color alive_color = sf::Color(255,69,0); //orangered
-	sf::Vector2f cell_size = sf::Vector2f(16, 16);
+	sf::Vector2f cell_size = sf::Vector2f(4, 4);
 	int grid_size{};
 
 	std::vector < std::vector <sf::RectangleShape> > grid_gui{};
