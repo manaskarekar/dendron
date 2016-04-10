@@ -3,6 +3,8 @@
 #include <thread>
 #include "../include/grid.h"
 
+// This is the controller for the linux terminal based version.
+
 int main(){
 	Grid g{45};
 	std::vector< std::vector <int> > seed_cells {

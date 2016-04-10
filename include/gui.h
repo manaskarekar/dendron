@@ -6,18 +6,6 @@
 #include <vector>
 
 class GridGUI {
-	/*
-	Requirements:
-		- Allow drawing a grid of size n.
-		- Allow seeding by clicking on cells.
-		- Refresh the grid at a given time interval.
-		- Have two states, alive and dead.
-		- Generalization: Perhaps, allow more than two states. (So multiple colors for examples)
-		- Instead of drawing each rectangle, load one image for each state and reuse.
-		- Like the python version, just create a for-x-for-y fn that you pass different operations to
-		- Write a tool to implement the Game of Life pattern recorder that records unique patterns and then you can inspect them later.
-	*/
-
 	sf::Color dead_color = sf::Color(32,32,32);
 	sf::Color alive_color = sf::Color(255,69,0); //orangered
 	sf::Vector2f cell_size = sf::Vector2f(16, 16);
@@ -37,7 +25,7 @@ public:
 	void update_grid(std::vector < std::vector <int> > grid_states);
 	void draw(sf::RenderWindow& window);
 
-	//TODO: Destructors
+	~GridGUI(){};
 };
 
 void GridGUI::init(int n){

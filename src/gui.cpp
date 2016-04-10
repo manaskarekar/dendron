@@ -25,14 +25,14 @@ int main(){
 		{20,19}, {21,19}, {21,18}, {20,20}, {22,19}
 	};
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
 	g.seed_grid(seed_pentonimo);
 
 	g_gui.update_grid(g.get_grid());
 	g_gui.draw(window);
 
 	window.display();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
 	while(window.isOpen()){
 		sf::Event event;
@@ -42,7 +42,7 @@ int main(){
 		}
 		//window.clear(gray);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 		g.update_grid(); //TODO: Pass around functions, like the python version
 		g_gui.update_grid(g.get_grid());
