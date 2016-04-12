@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <vector>
-#include <cstdlib> //Used for system, screen clear. TODO: Remove this once using proper GUI.
+#include <cstdlib>
 
 class Grid {
 	std::vector < std::vector <int> > grid{}, grid_next{};
