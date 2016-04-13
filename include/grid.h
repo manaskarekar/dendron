@@ -17,7 +17,6 @@ class Grid {
 	//const char cell_alive = '#';
 	//const char cell_invalid = 'x';
 
-
 	void init_grid(std::vector < std::vector <int> >& grid, int value);
 	void set_grid(std::vector < std::vector <int> >& grid, int value);
 	void set_cell_state(std::vector < std::vector <int> >& grid, int i, int j, int value);
@@ -102,7 +101,7 @@ void Grid::update_grid(){
 	//	//TODO: Show "No more activity in visible window" or something.
 	//	return;
 	//}
-	set_grid(grid_next, cell_dead); //TODO: Instead of setting the next grid as dead, copy the current grid and modify based on previous states.
+	set_grid(grid_next, cell_dead);
 	process_grid();
 	grid = grid_next; //TODO: check 2 things: assignment and scope of these
 }
