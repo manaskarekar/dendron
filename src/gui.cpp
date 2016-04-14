@@ -32,12 +32,6 @@ int main(){
 		{145,119}, {146,119}, {146,118}, {145,120}, {147,119},
 	};
 
-	std::vector< std::vector <int> > seed_three_pentonimos_bounds {
-		{120,144}, {121,144}, {121,143}, {120,145}, {122,144},
-		{120,119}, {121,119}, {121,118}, {120,120}, {122,119},
-		{145,119}, {146,119}, {146,118}, {145,120}, {147,119},
-	};
-
 	//TODO: Seed values are read as (y,x) instead of (x,y)
 
 	g.seed_grid(seed_three_pentonimos);
