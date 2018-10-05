@@ -6,7 +6,7 @@
 #include "../include/gui.h"
 #include "../include/generate_shape.h"
 
-int main(){
+int main() {
 	Grid g{268};
 	GridGUI g_gui{ g.get_grid() };
 
@@ -41,7 +41,7 @@ int main(){
 
 	window.display();
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	std::this_thread::sleep_for(std::chrono::milliseconds(5));
 
 	while(window.isOpen()){
 		sf::Event event;

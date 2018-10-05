@@ -6,28 +6,27 @@
 #include <cstdlib>
 
 class Grid {
-	std::vector < std::vector <int> > grid{}, grid_next{};
+	std::vector < std::vector <int> > grid{};
 	int grid_size{};
 
-	const int cell_dead = 0;
-	const int cell_alive = 1;
-	const int cell_invalid = -1;
+	//TODO: Just use 2 bits to store state such that lsb (current state) and lsb + 1 (next state) and then use bit operations
 
-	//const char cell_dead = '.';
-	//const char cell_alive = '#';
-	//const char cell_invalid = 'x';
+	static constexpr int cell_invalid = -1;
+	static constexpr int cell_dead = 0;
+	static constexpr int cell_alive = 1;
+	static constexpr int cell_toggle_to_dead = 2;
+	static constexpr int cell_toggle_to_alive = 3;
 
 	void init_grid(std::vector < std::vector <int> >& grid, int value);
-	void set_grid(std::vector < std::vector <int> >& grid, int value);
+	void set_grid(std::vector < std::vector <int> >& grid);
 	void set_cell_state(std::vector < std::vector <int> >& grid, int i, int j, int value);
 	int get_cell_state(int i, int j);
 	int count_neighbors(int i, int j);
-
+	bool check_alive(int i, int j);
 public:
 	//Grid()=default;
 	Grid(const int n) : grid_size(n) {
 		init_grid(grid, cell_dead);
-		init_grid(grid_next, cell_dead);
 	};
 
 	void seed_grid(std::vector< std::vector <int> > alive_cells);
@@ -38,7 +37,7 @@ public:
 	std::vector < std::vector <int> > get_grid();
 };
 
-void Grid::init_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
+void Grid::init_grid(std::vector < std::vector <int> >& grid_, int value){
 	std::vector <int> row{};
 	for(int i=0; i < grid_size; i++){
 		row = {};
@@ -49,10 +48,17 @@ void Grid::init_grid(std::vector < std::vector <int> >& grid_, int value){ // un
 	}
 }
 
-void Grid::set_grid(std::vector < std::vector <int> >& grid_, int value){ // underscore after "grid" to avoid any name clashes, shouldn't happen, but I'll remove it once I've confirmed it.
+void Grid::set_grid(std::vector < std::vector <int> >& grid_){
 	for(int i=0; i < grid_size; i++){
 		for(int j=0; j < grid_size; j++){
-			set_cell_state(grid_, i, j, value);
+			switch (get_cell_state(i, j)) {
+			case cell_toggle_to_alive:
+				set_cell_state(grid_, i, j, cell_alive);
+				break;
+			case cell_toggle_to_dead:
+				set_cell_state(grid_, i, j, cell_dead);
+				break;
+			}
 		}
 	}
 }
@@ -72,20 +78,27 @@ std::vector < std::vector <int> > Grid::get_grid(){
 	return grid;
 }
 
+bool Grid::check_alive(int i, int j) {
+	int cell_value = get_cell_state(i, j);
+	if (cell_value == cell_alive or cell_value == cell_toggle_to_dead)
+		return true;
+	return false;
+}
+
 int Grid::count_neighbors(int i, int j){
 	int count = 0;
 
 	//horizontal
-	if (get_cell_state(i-1, j) == cell_alive) count++;
-	if (get_cell_state(i+1, j) == cell_alive) count++;
+	if (check_alive(i-1, j)) 	count++;
+	if (check_alive(i+1, j)) 	count++;
 	//vertical
-	if (get_cell_state(i, j-1) == cell_alive) count++;
-	if (get_cell_state(i, j+1) == cell_alive) count++;
+	if (check_alive(i, j-1)) 	count++;
+	if (check_alive(i, j+1)) 	count++;
 	//diagonal
-	if (get_cell_state(i-1, j-1) == cell_alive) count++;
-	if (get_cell_state(i+1, j-1) == cell_alive) count++;
-	if (get_cell_state(i-1, j+1) == cell_alive) count++;
-	if (get_cell_state(i+1, j+1) == cell_alive) count++;
+	if (check_alive(i-1, j-1)) 	count++;
+	if (check_alive(i+1, j-1)) 	count++;
+	if (check_alive(i-1, j+1)) 	count++;
+	if (check_alive(i+1, j+1)) 	count++;
 	return count;
 }
 
@@ -97,13 +110,8 @@ void Grid::seed_grid(std::vector< std::vector <int> > alive_cells){
 }
 
 void Grid::update_grid(){
-	//if (grid == grid_next) { //TODO: Correct comparison
-	//	//TODO: Show "No more activity in visible window" or something.
-	//	return;
-	//}
-	set_grid(grid_next, cell_dead);
+	set_grid(grid);
 	process_grid();
-	grid = grid_next; //TODO: check 2 things: assignment and scope of these
 }
 
 void Grid::process_grid(){
@@ -111,13 +119,15 @@ void Grid::process_grid(){
 		for(int j=0; j < grid_size; j++){
 			int count = count_neighbors(i, j);
 			if (count != 2 && count != 3) {
-				set_cell_state(grid_next, i, j, cell_dead);
-			} else if (count == 2) {
 				if (get_cell_state(i, j) == cell_alive){
-					set_cell_state(grid_next, i, j, cell_alive);
+					set_cell_state(grid, i, j, cell_toggle_to_dead); //Herein lies the mistake
 				}
+			//} else if (count == 2) {
+				// do nothing
 			} else if (count == 3) {
-				set_cell_state(grid_next, i, j, cell_alive);
+				if (get_cell_state(i, j) == cell_dead){
+					set_cell_state(grid, i, j, cell_toggle_to_alive);
+				}
 			}
 		}
 	}
